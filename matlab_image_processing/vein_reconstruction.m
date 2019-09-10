@@ -1,12 +1,13 @@
 %US_Scan_flat
 %US_image
+tic()
 clear;
 clc;
 clf;
 close all;
 count = 1;
 %% read files
-data_file = 'data_30Aug_2';
+data_file = 'data_8Sep_2';
 load('calibration.mat');
 load('usprobe_pose.mat');
 addpath('rvctools/');
@@ -17,8 +18,9 @@ imageList = dir(strcat(data_file,'/*.jpg'));
 for i=1:size(imageList,1)
     I2 = iread(strcat(data_file,'/',imageList(i).name),'double','grey');
     %% to crop the area of image only 
-    disp("select imaging area")
+    
     if i == 1
+        disp("select imaging area")
         [J,rect2] = imcrop(I2);
         rect2 = uint16(rect2);
         rect_coord = [rect2(2),rect2(2)+rect2(4), rect2(1),rect2(1)+rect2(3)];
@@ -26,8 +28,8 @@ for i=1:size(imageList,1)
     
     I2= I2(rect_coord(1):rect_coord(2), rect_coord(3):rect_coord(4));
     
-    figure(1);
-    imshow(I2);
+%     figure(1);
+%     imshow(I2);
     disp(i)
     %smoothing-rvc p.397
     %monadic-rvc p.371
@@ -35,8 +37,9 @@ for i=1:size(imageList,1)
     % figure(4)
     % imshow(imgaussfilt(clean)<.2);
     figure(5)
-    f=ismooth(I2,2)<0.18;
-    %imshow(f);
+    f=ismooth(I2,2)<0.5;
+%     imshow(f);
+%     figure(6);
     % out = hitormiss(I2, S);
     % figure(5);
     % imshow(out)
@@ -75,6 +78,7 @@ for i=1:size(imageList,1)
     %imgradient
     %local adaptive thresholding
     %Ellipse Detection Using 1D Hough Transform
+%     waitforbuttonpress;
 end
 daspect([1 1 1]);
 axis vis3d;
@@ -82,3 +86,5 @@ title('Ultrasound vein reconstruction using circle hough transform');
 xlabel('x(mm)');
 ylabel('y(mm)');
 zlabel('z(mm)');
+
+toc()

@@ -20,7 +20,7 @@ opts.ExtraColumnsRule = "ignore";
 opts.EmptyLineRule = "read";
 
 % Import the data
-ultrasoundscanflat = readtable("~/TRACIR/data_2Sep_2/ultrasound_scan_flat.txt", opts);
+ultrasoundscanflat = readtable("~/data_2Sep_2/ultrasound_scan_flat.txt", opts);
 us_pose = table2array(ultrasoundscanflat);
 save('usprobe_pose.mat','us_pose')
 
