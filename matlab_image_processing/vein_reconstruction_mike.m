@@ -37,7 +37,7 @@ for i=1:size(imageList,1)
     % figure(4)
     % imshow(imgaussfilt(clean)<.2);
     figure(5)
-    f=ismooth(I2,2)<0.5;
+    f=ismooth(I2,2)<0.18;
 %     imshow(f);
 %     figure(6);
     % out = hitormiss(I2, S);
