@@ -3,23 +3,28 @@ function [BWsdil,centers,radii] = robust_circle_v0(I_cropped)
     fudgeFactor = 0.5;
     BWs = edge(I_cropped,'sobel',threshold * fudgeFactor);
 
-%     imshow(BWs)
+    imshow(BWs)
+    "sobel gradient"
+    waitforbuttonpress
     title('Binary Gradient Mask')
 
-    se90 = strel('line',3,90);
-    se0 = strel('line',3,0);
+    se90 = strel('line',5,90);
+    se0 = strel('line',5,0);
     BWsdil = imdilate(BWs,[se90 se0]);
-%     imshow(BWsdil)
-    [centers,radii] = imfindcircles(1-BWsdil,[20 500],'Sensitivity',0.915)
-    % draw cross hair
+    BWsdil = imerode(BWsdil,[se90 se0]);
+    
+    [centers,radii] = imfindcircles(BWsdil,[30 100],'Sensitivity',0.95)
+    
+    %% draw cross hair
+%  
     centers=int32(centers);
 %     BWsdil(centers(1),:) = 0;
 %     BWsdil(:,centers(2)) = 0;
     if isempty(centers)
         disp('circle not found')
     else
-        BWsdil(:,centers(1)) = 0;
-        BWsdil(centers(2),:) = 0;
+        BWsdil(:,centers(1)) = 1;
+        BWsdil(centers(2),:) = 1;
 
     end
 

@@ -2,17 +2,19 @@
 
 clc
 clear
+data_file = 'data_8Sep_2';
+fileList = dir(strcat(data_file,'/*.jpg'));
 
-for i = 1:100
-    data_file = 'data_8Sep_2';
-    fileList = dir(strcat(data_file,'/*.jpg'));
+image_num = 50
+for i = image_num
+    
     imagename = strcat(data_file,'/',fileList(i).name)
     I = imread(imagename);
  
-    I_cropped = I;
+    I_cropped = rgb2gray(I);
     % [x,y] = ginput(n)
     % rect = getrect(I_cropped)
-    if i==1
+    if i==image_num
         [J,rect2] = imcrop(I_cropped);
         rect2 = uint16(rect2);
     end
