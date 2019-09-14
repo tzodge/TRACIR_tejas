@@ -15,7 +15,7 @@ img_circ_gaus1=imgaussfilt(img_circ_hist,10);
 img_circ_gaus2=imgaussfilt(img_circ_hist,50);
 img_circ_gausf = img_circ_gaus1- img_circ_gaus2;
 
-[centers, radii]=imfindcircles(255-img_circ_gausf,[30 60],'Sensitivity',0.9);
+[centers, radii]=imfindcircles(255-img_circ_gausf,[30 60],'Sensitivity',0.85);
 plot_centers(img_circ_gausf,centers,radii);
 
 end
