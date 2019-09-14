@@ -13,7 +13,7 @@ function [BWsdil,centers,radii] = robust_circle_v0(I_cropped)
     BWsdil = imdilate(BWs,[se90 se0]);
     BWsdil = imerode(BWsdil,[se90 se0]);
     
-    [centers,radii] = imfindcircles(BWsdil,[25 70],'Sensitivity',0.93)
+    [centers,radii] = imfindcircles(BWsdil,[30 70],'Sensitivity',0.915)
     
     %% draw cross hair
 % %  

@@ -7,7 +7,7 @@ clf;
 close all;
 count = 1;
 %% read files
-data_file = 'data_8Sep_2';
+data_file = 'data_30Aug_2';
 load('calibration.mat');
 load('usprobe_pose.mat');
 addpath('rvctools/');
@@ -39,6 +39,7 @@ for i=1:size(imageList,1)
     figure(5)
     f=ismooth(I2,2)<0.18;
 %     imshow(f);
+%     waitforbuttonpress;
 %     figure(6);
     % out = hitormiss(I2, S);
     % figure(5);
