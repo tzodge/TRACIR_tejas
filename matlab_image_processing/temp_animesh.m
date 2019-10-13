@@ -4,6 +4,8 @@ close all
 data_file = 'data_30Aug_2';
 fileList = dir(strcat(data_file,'/*.jpg'));
 
+
+
 base_num = 162;
 for i = 1:size(fileList ,1)
     img_circ_str =  strcat(data_file,'/',fileList(i).name);
