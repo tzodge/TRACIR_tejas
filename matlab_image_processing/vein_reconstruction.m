@@ -7,7 +7,7 @@ clf;
 close all;
 count = 1;
 %% read files
-data_file = 'data_14Sep_2';
+data_file = 'datasets/data_14Sep_2';
 load('calibration.mat');
 load('usprobe_pose.mat');
 addpath('rvctools/');
