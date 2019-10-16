@@ -77,25 +77,25 @@ end
 %% plotting 
 % plot(error,'LineWidth',3)
 figure(1)
-plot(x_k_array(:,1),'DisplayName','x_k  x','LineWidth',3);
+plot(x_k_array(:,1),'DisplayName','Estimated from kalman x','LineWidth',3);
 hold on
-plot(x_k_dyn_array(:,1),'DisplayName','x_k_dyn  x','LineWidth',3);
-plot(z_k_array(:,1),'DisplayName','z_k x','LineWidth',3);
-plot(x_gt_array(:,1),'DisplayName','x_{gt} x','LineWidth',3);
+% plot(x_k_dyn_array(:,1),'DisplayName','x_k_dyn  x','LineWidth',3);
+plot(z_k_array(:,1),'DisplayName','sensor measurement x','LineWidth',3);
+plot(x_gt_array(:,1),'DisplayName','Ground truth x','LineWidth',3);
 legend
 
 figure(2)
-plot(x_k_array(:,2),'DisplayName','x_k  y','LineWidth',3);
+plot(x_k_array(:,2),'DisplayName','Estimated from kalman y','LineWidth',3);
 hold on
-plot(x_k_dyn_array(:,2),'DisplayName','x_k_dyn y','LineWidth',3);
-plot(z_k_array(:,2),'DisplayName','z_k y','LineWidth',3);
-plot(x_gt_array(:,2),'DisplayName','x_{gt} y','LineWidth',3);
+% plot(x_k_dyn_array(:,2),'DisplayName','x_k_dyn y','LineWidth',3);
+plot(z_k_array(:,2),'DisplayName','sensor measurement y','LineWidth',3);
+plot(x_gt_array(:,2),'DisplayName','Ground truth y','LineWidth',3);
 legend
-
-figure(3)
-scatter(x_k_array(:,1),x_k_array(:,2),'filled','DisplayName','x_k');
-hold on
-scatter(z_k_array(:,1),z_k_array(:,2),'filled','DisplayName','z_k y' );
-scatter(x_k_dyn_array(:,1),x_k_dyn_array(:,2),'filled','DisplayName','x_k_dyn y' );
-scatter(x_gt_array(:,1),x_gt_array(:,2),'filled','DisplayName','x_{gt} y');
-legend
+% 
+% figure(3)
+% scatter(x_k_array(:,1),x_k_array(:,2),'filled','DisplayName','x_k');
+% hold on
+% scatter(z_k_array(:,1),z_k_array(:,2),'filled','DisplayName','z_k y' );
+% scatter(x_k_dyn_array(:,1),x_k_dyn_array(:,2),'filled','DisplayName','x_k_dyn y' );
+% scatter(x_gt_array(:,1),x_gt_array(:,2),'filled','DisplayName','x_{gt} y');
+% legend
