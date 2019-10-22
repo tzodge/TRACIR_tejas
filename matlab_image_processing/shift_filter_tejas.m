@@ -39,6 +39,7 @@ img_out=uint8(zeros(size(a)));
 for i = 1:size(idx)
     img_out(idx(i),idy(i)) = 255;
 end 
+img_out = imgaussfilt(img_out,gauss_sigm*2);
 close all
 end
 
