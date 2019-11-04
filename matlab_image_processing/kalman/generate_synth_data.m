@@ -28,8 +28,8 @@ function image = generate_circle(radius, center)
     imageSizeY = 480;
     [columnsInImage rowsInImage] = meshgrid(1:imageSizeX, 1:imageSizeY);
  
-    centerX = center(1)
-    centerY = center(2)
+    centerX = center(1);
+    centerY = center(2);
     circlePixels = (rowsInImage - centerY).^2 ...
         + (columnsInImage - centerX).^2 <= radius.^2;
     image = circlePixels ;

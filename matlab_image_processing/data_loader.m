@@ -1,4 +1,7 @@
-function data_loader
+%%%%%%%%% I suspect that this file is not been used anywhere
+%%%%%%%%% Don't delete unless confirmed
+
+function data_loader(data_file)
 %% Import data from text file
 % Script for importing data from the following text file:
 %
@@ -20,7 +23,8 @@ opts.ExtraColumnsRule = "ignore";
 opts.EmptyLineRule = "read";
 
 % Import the data
-ultrasoundscanflat = readtable("~/data_2Sep_2/ultrasound_scan_flat.txt", opts);
+file_name = strcat("~/",data_file,"/ultrasound_scan_flat.txt");
+ultrasoundscanflat = readtable(file_name, opts);
 us_pose = table2array(ultrasoundscanflat);
 save('usprobe_pose.mat','us_pose')
 

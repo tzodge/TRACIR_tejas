@@ -14,6 +14,8 @@ gauss_sigm=params.gauss_sigm;
 img_base_gauss =imgaussfilt(img_base,gauss_sigm);
 % img_base_gauss =img_base;
 
+
+
 %% shift image and take average
 img_left=uint8(zeros(size(img_base_gauss)));
 img_right=uint8(zeros(size(img_base_gauss)));
@@ -33,6 +35,7 @@ I4 = img_base_gauss-img_bottom;
 
 avg_img =(I1+I2+I3+I4)/4; 
 a=rgb2gray(avg_img );
+ 
 
 img_out=uint8(zeros(size(a)));
 [idx,idy] = find(a>thresh_bin); 
