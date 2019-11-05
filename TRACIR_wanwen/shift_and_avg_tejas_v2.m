@@ -15,7 +15,7 @@ params.half_window = 1;
 %{
 data_file = 'datasets/data_30Aug_2';
 start_frame = 8;
-params.min_rad = 30;
+params.min_rad = 30;      
 params.max_rad = 80;
 params.half_window = 2;
 %}

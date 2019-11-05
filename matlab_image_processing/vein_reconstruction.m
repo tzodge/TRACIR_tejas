@@ -6,8 +6,20 @@ clc;
 clf; 
 close all;
 count = 1;
+
+%% define wanwen parameters
+params.pix_shift_x = 1;
+params.pix_shift_y = 1;
+params.thresh_bin = 4; %4       
+params.gauss_sigm = 3;
+
+params.min_rad = 20;
+params.max_rad = 50;
+params.half_window = 1;
+
+start_frame = 40;
 %% read files
-data_file = 'datasets/data_14Sep_2';
+data_file = 'datasets/data_14Sep_2_for_presentation';
 
 load('calibration.mat');
 load('usprobe_pose.mat');
@@ -26,51 +38,64 @@ mkdir(resluts_save_dir)
 fig_reconstruction = figure;
 daspect([1 1 1]);
  axis([-90 -60 600 620 340 440])
-% fig_centroid_3d = figure;
+init_flag = 0;
+ % fig_centroid_3d = figure;
 %% run code
-for i=1: size(imageList,1)
+for i=start_frame: size(imageList,1)
     I_original = imread(strcat(data_file,'/',imageList(i).name) );
-    %% to crop the area of image only
     
-    if i == 1
+    if i == start_frame
         disp("select imaging area")
-        [J,rect2] = imcrop(I_original);
-        rect2 = uint32(rect2);
-        rect_coord = [rect2(2),rect2(2)+rect2(4), rect2(1),rect2(1)+rect2(3)];
+        [J,rect1] = imcrop(I_original);
+        rect1 = uint32(rect1);
+        rect_coord = [rect1(2),rect1(2)+rect1(4), rect1(1),rect1(1)+rect1(3)];
         offset = [rect_coord(3),rect_coord(1)] ;
+        params.cut_xmin = rect1(2)+10;
+        params.cut_ymin = rect1(1)+10;
+        params.cut_height = rect1(4)-10;
+        params.cut_width = rect1(3)-10;
 %         fig_centroid_3d = figure;
     end
     
-    I2= I_original(rect_coord(1):rect_coord(2), rect_coord(3):rect_coord(4));
+    if init_flag == 0
+        disp("select initial vessle area")
+        [J,rect2] = imcrop(I_original);
+        start_point = [rect2(2)+rect2(4)/2,rect2(1)+rect2(3)/2];
+        params.start_point = start_point;
+        init_flag = 1;
+    end
     
-    disp (offset)
+    img_out = shift_filter_tejas(I_original,params);
+%     I2= I_original(rect_coord(1):rect_coord(2), rect_coord(3):rect_coord(4));
     disp(i)
     
     q=UnitQuaternion(us_pose(i,4),us_pose(i,5:7));
     p=us_pose(i,1:3)'*1000;
     R=q.R;
 %[centers,radii] = imfindcircles(I2,[30 70],'Sensitivity',0.915) %0.915
-    [BWsdil,centers,radii] = robust_circle_v1(I2);
-    
-    if length(centers)~=0
-%         close
-        centers = centers + double(offset);
-        
-        plot_on = 0;
-        if plot_on == 1
-            fig2 = figure;
-            figure(fig2 );
-            imshow(I_original);
-            hold on;
-            viscircles(image_frame_origin,3,'Color','g');
-            viscircles([rect_coord(3),rect_coord(1)],3,'Color','b');
-            viscircles(centers,radii);
-            pause()
-            close (fig2) ;
+%     [BWsdil,centers,radii] = robust_circle_v1(I2);
+    [circle, edge_points] = circle_detection_wanwen_v2(img_out,params,'circle');
+
+    if ~isempty(circle) 
+        if circle.rad < params.max_rad  
+            centers = [circle.yc,circle.xc];
+            radii = circle.rad;
+            plot_on = 1;
+            if plot_on == 1
+                fig2 = figure;
+                figure(fig2 );
+                imshow(I_original);
+                hold on;
+                viscircles(image_frame_origin,3,'Color','g');
+                viscircles([rect_coord(3),rect_coord(1)],3,'Color','b');
+                viscircles(centers,radii);
+                pause()
+                close (fig2) ;
+            end
+            centers = centers-double(image_frame_origin);
+            contri(count) = i;
+            count = count+1;
         end
-        centers = centers-double(image_frame_origin);
-        contri(count) = i;
-        count = count+1;
     end
     
     if(length(centers)==0)
@@ -93,6 +118,7 @@ for i=1: size(imageList,1)
             
     end
 
+    %% saving results image by image
 %     savename = strcat('/reconstruct_result_',string(i),'.png');
 %     full_path = strcat(resluts_save_dir,savename);
 %     saveas(fig_reconstruction,full_path);
