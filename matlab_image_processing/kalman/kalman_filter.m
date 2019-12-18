@@ -2,8 +2,8 @@
 clear all;
 close all; clc;
 format compact;
- 
-myFolder = strcat(pwd,'/data/');
+dataset = 'data_2'
+myFolder = strcat(pwd,'/',dataset,'/');
 centers_list = load( strcat(myFolder,'centers_list.mat') );
 filePattern = fullfile(myFolder, '*.png');
 png_files = dir(filePattern);
@@ -23,7 +23,7 @@ beta = 01;
 gamma = 1;
 dt = 1;
 
-data_start = 1; data_end = 101;
+data_start = 1; data_end = 40;
 P_init = gamma*[size(img_1,2)^2,0; ...
           0,size(img_1,1)^2];  
 
@@ -45,33 +45,34 @@ for k = 1:length(png_files)
     %% SENSOR MEASUREMENT
     
 %     filename = strcat(myFolder ,png_files(k).name)
-    filename = sprintf('data/img_%d.png', k);
-    z_k = imfindcircles(imread(filename),[50,120])';
-    z_k = z_k + (rand(2,1)-0.5)*50 
-    %% PREDICTION STEP
-    
-    A = [(1 + v(1)*dt/x_km1(1)), 0; ...
-         0, (1 + v(2)*dt/x_km1(2))] ;
-     
-    x_k_dyn = A*x_km1;  
-    P_k_dyn = A*P_km1*A' + Q;
-    
-    %% UPDATE STEP
-    K = P_k_dyn*H'*inv( H*P_k_dyn*H'+R);
-    x_k = x_k_dyn+ K*(z_k - H*x_k_dyn);
-    P_k = (eye(2) - K*H)*P_k_dyn;
-    
-    x_km1 = x_k;
-    P_km1 = P_k;
 
-    x_k_gt = centers_list.centers_list(k,:)'; 
-    x_k
-    z_k
-    error(k)= norm(x_k-x_k_gt);
-    z_k_array(k,:) = z_k;
-    x_k_array(k,:) = x_k;
-    x_gt_array(k,:) = x_k_gt;
-    x_k_dyn_array(k,:) = x_k_dyn;
+    filename = sprintf(strcat(dataset,'/img_%d.png'), k);
+    z_k = imfindcircles(uint8(255-imread(filename)),[50,120],'Sensitivity',0.98)'
+%     z_k = z_k + (rand(2,1)-0.5)*50 
+%     %% PREDICTION STEP
+%     
+%     A = [(1 + v(1)*dt/x_km1(1)), 0; ...
+%          0, (1 + v(2)*dt/x_km1(2))] ;
+%      
+%     x_k_dyn = A*x_km1;  
+%     P_k_dyn = A*P_km1*A' + Q;
+%     
+%     %% UPDATE STEP
+%     K = P_k_dyn*H'*inv( H*P_k_dyn*H'+R);
+%     x_k = x_k_dyn+ K*(z_k - H*x_k_dyn);
+%     P_k = (eye(2) - K*H)*P_k_dyn;
+%     
+%     x_km1 = x_k;
+%     P_km1 = P_k;
+% 
+%     x_k_gt = centers_list.centers_list(k,:)'; 
+%     x_k
+%     z_k
+%     error(k)= norm(x_k-x_k_gt);
+%     z_k_array(k,:) = z_k;
+%     x_k_array(k,:) = x_k;
+%     x_gt_array(k,:) = x_k_gt;
+%     x_k_dyn_array(k,:) = x_k_dyn;
 end
 
 %% plotting 
